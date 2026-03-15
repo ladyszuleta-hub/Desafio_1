@@ -3,29 +3,29 @@
 #include "piezas.h"
 using namespace std;
 
-unsigned char** tablero;
-int ancho, alto;
-int bytesPorFila;
-
-void pedirDimensiones() {
-
-    do {
-        cout << "Ancho (multiplo de 8, minimo 8): ";
-        cin >> ancho;
-    } while(ancho < 8 || ancho % 8 != 0);
+int pedirAlto() {
+    int alto;
 
     do {
         cout << "Alto (minimo 8): ";
         cin >> alto;
     } while(alto < 8);
+    return alto;
 
 }
+int pedirAncho(){
+    int ancho;
+    do {
+        cout << "Ancho (multiplo de 8, minimo 8): ";
+        cin >> ancho;
+    } while(ancho < 8 || ancho % 8 != 0);
+    return ancho;
+}
+unsigned char** crearTablero(int ancho,int alto) {
 
-void crearTablero() {
+    int bytesPorFila = ancho / 8;
 
-    bytesPorFila = ancho / 8;
-
-    tablero = new unsigned char*[alto];
+    unsigned char** tablero = new unsigned char*[alto];
 
     for(int i=0;i<alto;i++) {
 
@@ -34,8 +34,9 @@ void crearTablero() {
         for(int j=0;j<bytesPorFila;j++)
             tablero[i][j] = 0;
     }
+    return tablero;
 }
-void imprimirTablero() {
+void imprimirTablero(unsigned char** tablero, int alto, int ancho) {
 
     for(int y = 0; y < alto; y++) {
 

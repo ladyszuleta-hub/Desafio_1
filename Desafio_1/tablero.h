@@ -1,12 +1,11 @@
 #ifndef TABLERO_H
 #define TABLERO_H
-extern unsigned char** tablero;
-extern int ancho, alto;
-extern int bytesPorFila;
 
-void pedirDimensiones();
-void crearTablero();
-void imprimirTablero();
+
+int pedirAncho();
+int pedirAlto();
+unsigned char** crearTablero(int ancho,int alto);
+void imprimirTablero(unsigned char** tablero, int alto, int ancho);
 
 #endif // TABLERO_H
 

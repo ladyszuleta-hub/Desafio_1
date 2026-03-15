@@ -4,9 +4,12 @@ using namespace std;
 
 int main(){
 
-    pedirDimensiones();
-    crearTablero();
-    imprimirTablero();
+    int ancho = pedirAncho();
+    int alto = pedirAlto();
+
+    unsigned char** tablero = crearTablero(ancho, alto);
+
+    imprimirTablero(tablero, alto, ancho);
 
     return 0;
 }
