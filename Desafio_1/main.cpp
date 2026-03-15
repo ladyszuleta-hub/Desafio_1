@@ -1,9 +1,12 @@
 #include <iostream>
-
+#include "tablero.h"
 using namespace std;
 
-int main()
-{
-    cout << "Hello World!" << endl;
+int main(){
+
+    pedirDimensiones();
+    crearTablero();
+    imprimirTablero();
+
     return 0;
 }
