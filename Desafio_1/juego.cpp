@@ -21,5 +21,5 @@ bool colision(unsigned char **tablero, unsigned char pieza[4], int posX, int pos
             }
         }
 
-    }
+    }return false;
 }

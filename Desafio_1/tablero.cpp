@@ -56,4 +56,11 @@ void imprimirTablero(unsigned char** tablero, int alto, int ancho) {
     }
 }
 
+void limpiarTablero(unsigned char** tablero, int alto, int ancho){
 
+    for(int i = 0; i < alto; i++){
+        for(int j = 0; j < ancho/8; j++){
+            tablero[i][j] = 0;
+        }
+    }
+}

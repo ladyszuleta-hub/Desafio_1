@@ -71,42 +71,26 @@ void copiarPieza(unsigned char** tablero,unsigned char pieza[4],int x,int y){
         }
     }
 }
-bool puedeMoverIzquierda(unsigned char pieza[4]){
-
-    for(int i=0;i<4;i++){
-        // si el bit más a la izquierda ya está en 1
-        if(pieza[i] & 0b10000000)
-            return false;
-    }
-
-    return true;
+void moverIzquierda(
+    unsigned char pieza[4],
+    int &posX,
+    int posY,
+    unsigned char **tablero,
+    int alto,
+    int ancho
+    ){
+    if(!colision(tablero, pieza, posX - 1, posY, alto, ancho))
+        posX--;
 }
-bool puedeMoverDerecha(unsigned char pieza[4]){
-
-    for(int i=0;i<4;i++){
-        // si el bit más a la derecha está en 1
-        if(pieza[i] & 0b00000001)
-            return false;
-    }
-
-    return true;
-}
-void moverIzquierda(unsigned char pieza[4]){
-    if (puedeMoverIzquierda(pieza)){
-
-    for(int i=0;i<4;i++)
-        pieza[i] <<= 1;
-    }
-
-}
-void moverDerecha(unsigned char pieza[4]){
-
-    if (puedeMoverDerecha(pieza)){
-
-    for(int i=0;i<4;i++)
-        pieza[i] >>= 1;
-    }
-
+void moverDerecha(unsigned char pieza[4],
+    int &posX,
+    int posY,
+    unsigned char **tablero,
+    int alto,
+    int ancho
+    ){
+    if(!colision(tablero, pieza, posX + 1, posY, alto, ancho))
+        posX++;
 }
 char leerMovimiento() {
 
@@ -117,13 +101,23 @@ char leerMovimiento() {
 
     return mov;
 }
-void procesarMovimiento(char mov, unsigned char pieza[4]) {
-
-    if(mov == 'a')
-        moverIzquierda(pieza);
-
-    if(mov == 'd')
-        moverDerecha(pieza);
-
+void procesarMovimiento(
+    char mov,
+    unsigned char pieza[4],
+    int &posX,
+    int posY,
+    unsigned char **tablero,
+    int alto,
+    int ancho
+    ){
+    if(mov == 'a'){
+        moverIzquierda(pieza, posX, posY, tablero, alto, ancho);
+    }
+    else if(mov == 'd'){
+        moverDerecha(pieza, posX, posY, tablero, alto, ancho);
+    }
+    else if(mov == 'r'){
+        rotarPieza(pieza);
+    }
 }
 
