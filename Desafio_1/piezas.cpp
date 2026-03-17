@@ -31,3 +31,99 @@ void rotarPieza(unsigned char pieza[4]){
     for(int i=0;i<4;i++)
         pieza[i] = nueva[i];
 }
+void generarPieza(unsigned char pieza[4]){
+
+    int tipo = rand()%2;
+
+    if(tipo==0){ // cuadrado
+
+        pieza[0] = 0b00011000;
+        pieza[1] = 0b00011000;
+        pieza[2] = 0;
+        pieza[3] = 0;
+
+    }
+
+    if(tipo==1){ // linea
+
+        pieza[0] = 0b00010000;
+        pieza[1] = 0b00010000;
+        pieza[2] = 0b00010000;
+        pieza[3] = 0b00010000;
+
+    }
+
+}
+
+void copiarPieza(unsigned char** tablero,unsigned char pieza[4],int x,int y){
+
+    for(int i=0;i<4;i++){
+
+        int fila = y+i;
+
+        if(pieza[i]!=0){
+
+            int byte = x/8;
+            int bit = x%8;
+
+            tablero[fila][byte] |= (pieza[i] >> bit);
+
+        }
+    }
+}
+bool puedeMoverIzquierda(unsigned char pieza[4]){
+
+    for(int i=0;i<4;i++){
+        // si el bit más a la izquierda ya está en 1
+        if(pieza[i] & 0b10000000)
+            return false;
+    }
+
+    return true;
+}
+bool puedeMoverDerecha(unsigned char pieza[4]){
+
+    for(int i=0;i<4;i++){
+        // si el bit más a la derecha está en 1
+        if(pieza[i] & 0b00000001)
+            return false;
+    }
+
+    return true;
+}
+void moverIzquierda(unsigned char pieza[4]){
+    if (puedeMoverIzquierda(pieza)){
+
+    for(int i=0;i<4;i++)
+        pieza[i] <<= 1;
+    }
+
+}
+void moverDerecha(unsigned char pieza[4]){
+
+    if (puedeMoverDerecha(pieza)){
+
+    for(int i=0;i<4;i++)
+        pieza[i] >>= 1;
+    }
+
+}
+char leerMovimiento() {
+
+    char mov;
+
+    cout << "Movimiento (a=izq, d=der, q=salir): ";
+    cin >> mov;
+
+    return mov;
+}
+void procesarMovimiento(char mov, unsigned char pieza[4]) {
+
+    if(mov == 'a')
+        moverIzquierda(pieza);
+
+    if(mov == 'd')
+        moverDerecha(pieza);
+
+}
+

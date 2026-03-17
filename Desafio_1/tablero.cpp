@@ -55,3 +55,5 @@ void imprimirTablero(unsigned char** tablero, int alto, int ancho) {
         cout << endl;
     }
 }
+
+
