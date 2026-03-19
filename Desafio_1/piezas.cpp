@@ -31,50 +31,69 @@ void rotarPieza(unsigned char pieza[4]){
     for(int i=0;i<4;i++)
         pieza[i] = nueva[i];
 }
+void rotarSiSePuede(unsigned char pieza[4],unsigned char **tablero,int &posX,int &posY,int ancho,int alto)
+{
+    unsigned char copia[4];
+
+    // copiar pieza original
+    for(int i = 0; i < 4; i++)
+        copia[i] = pieza[i];
+
+    // rotar la copia
+    rotarPieza(copia);
+
+    // verificar colisión
+    if(!colision(tablero, copia, posX, posY, ancho, alto))
+    {
+        // aplicar rotación a la original
+        for(int i = 0; i < 4; i++)
+            pieza[i] = copia[i];
+    }
+}
 void generarPieza(unsigned char pieza[4]){
 
     int tipo = rand()%2;
 
     if(tipo==0){ // cuadrado
 
-        pieza[0] = 0b00011000;
-        pieza[1] = 0b00011000;
-        pieza[2] = 0;
-        pieza[3] = 0;
+        pieza[0] = 0;
+        pieza[1] = 0;
+        pieza[2] = 0b00000011;
+        pieza[3] = 0b00000011;
 
     }
 
     if(tipo==1){ // linea
 
-        pieza[0] = 0b00010000;
-        pieza[1] = 0b00010000;
-        pieza[2] = 0b00010000;
-        pieza[3] = 0b00010000;
+        pieza[0] = 0b00000001;
+        pieza[1] = 0b00000001;
+        pieza[2] = 0b00000001;
+        pieza[3] = 0b00000001;
 
     }
 
 }
 
-void copiarPieza(unsigned char** tablero,unsigned char pieza[4],int x,int y){
+void copiarPiezaParcial(unsigned char** tablero,unsigned char pieza[4],int posX,int posY,int lineasVisibles){
+    for(int i = 0; i < lineasVisibles; i++){
+        int y = posY + i;
 
-    for(int i=0;i<4;i++){
+        for(int j = 0; j < 8; j++){
+            if(pieza[i] & (1 << j)){
+                int x = posX + j;
 
-        int fila = y+i;
+                int byte = x / 8;
+                int bit  = x % 8;
 
-        if(pieza[i]!=0){
-
-            int byte = x/8;
-            int bit = x%8;
-
-            tablero[fila][byte] |= (pieza[i] >> bit);
-
+                tablero[y][byte] |= (1 << bit);
+            }
         }
     }
 }
 void moverIzquierda(
     unsigned char pieza[4],
     int &posX,
-    int posY,
+    int &posY,
     unsigned char **tablero,
     int alto,
     int ancho
@@ -84,7 +103,7 @@ void moverIzquierda(
 }
 void moverDerecha(unsigned char pieza[4],
     int &posX,
-    int posY,
+    int &posY,
     unsigned char **tablero,
     int alto,
     int ancho
@@ -92,32 +111,3 @@ void moverDerecha(unsigned char pieza[4],
     if(!colision(tablero, pieza, posX + 1, posY, alto, ancho))
         posX++;
 }
-char leerMovimiento() {
-
-    char mov;
-
-    cout << "Movimiento (a=izq, d=der, q=salir): ";
-    cin >> mov;
-
-    return mov;
-}
-void procesarMovimiento(
-    char mov,
-    unsigned char pieza[4],
-    int &posX,
-    int posY,
-    unsigned char **tablero,
-    int alto,
-    int ancho
-    ){
-    if(mov == 'a'){
-        moverIzquierda(pieza, posX, posY, tablero, alto, ancho);
-    }
-    else if(mov == 'd'){
-        moverDerecha(pieza, posX, posY, tablero, alto, ancho);
-    }
-    else if(mov == 'r'){
-        rotarPieza(pieza);
-    }
-}
-

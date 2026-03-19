@@ -64,3 +64,40 @@ void limpiarTablero(unsigned char** tablero, int alto, int ancho){
         }
     }
 }
+
+bool filaLlena(unsigned char *fila, int bytesPorFila)
+{
+    for(int i = 0; i < bytesPorFila; i++)
+    {
+        if(fila[i] != 0xFF) // 11111111
+            return false;
+    }
+    return true;
+}
+void eliminarFilas(unsigned char **tablero, int alto, int ancho)
+{
+    int bytesPorFila = (ancho + 7) / 8;
+
+    for(int y = 0; y < alto; y++)
+    {
+        if(filaLlena(tablero[y], bytesPorFila))
+        {
+            // bajar todas las filas de arriba
+            for(int k = y; k > 0; k--)
+            {
+                for(int b = 0; b < bytesPorFila; b++)
+                {
+                    tablero[k][b] = tablero[k-1][b];
+                }
+            }
+
+            // limpiar la fila superior
+            for(int b = 0; b < bytesPorFila; b++)
+            {
+                tablero[0][b] = 0;
+            }
+
+            y--; // revisar la misma fila otra vez
+        }
+    }
+}
