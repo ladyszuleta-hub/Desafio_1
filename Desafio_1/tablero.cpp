@@ -21,7 +21,7 @@ int pedirAncho(){
     } while(ancho < 8 || ancho % 8 != 0);
     return ancho;
 }
-unsigned char** crearTablero(int ancho,int alto) {
+unsigned char** crearTablero(int alto,int ancho) {
 
     int bytesPorFila = ancho / 8;
 
@@ -53,15 +53,6 @@ void imprimirTablero(unsigned char** tablero, int alto, int ancho) {
         }
 
         cout << endl;
-    }
-}
-
-void limpiarTablero(unsigned char** tablero, int alto, int ancho){
-
-    for(int i = 0; i < alto; i++){
-        for(int j = 0; j < ancho/8; j++){
-            tablero[i][j] = 0;
-        }
     }
 }
 
@@ -100,4 +91,12 @@ void eliminarFilas(unsigned char **tablero, int alto, int ancho)
             y--; // revisar la misma fila otra vez
         }
     }
+}
+void liberarTablero(unsigned char** tablero, int alto){
+
+    for(int i = 0; i < alto; i++){
+        delete[] tablero[i];
+    }
+
+    delete[] tablero;
 }

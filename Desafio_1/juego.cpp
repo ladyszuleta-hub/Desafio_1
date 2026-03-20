@@ -4,7 +4,7 @@
 #include "piezas.h"
 using namespace std;
 
-bool colision(unsigned char **tablero, unsigned char pieza[4], int posX, int posY, int ancho, int alto){
+bool colision(unsigned char **tablero, unsigned char pieza[4], int posX, int posY, int alto, int ancho){
     for (int i=0; i<4;i++){
         int y =posY+i;
         if(y<0) continue;
@@ -23,7 +23,7 @@ bool colision(unsigned char **tablero, unsigned char pieza[4], int posX, int pos
 
     }return false;
 }
-void fijarPieza(unsigned char **tablero,unsigned char pieza[4],int &posX,int &posY,int ancho,int alto)
+void fijarPieza(unsigned char **tablero,unsigned char pieza[4],int &posX,int &posY,int alto,int ancho)
 {
     for(int i = 0; i < 4; i++)
     {
@@ -50,7 +50,6 @@ void fijarPieza(unsigned char **tablero,unsigned char pieza[4],int &posX,int &po
     }
 }
 char leerMovimiento() {
-
     char mov;
 
     cout << "Movimiento (a=izq, d=der, s= bajar, r=rotar, q=salir): ";
@@ -76,17 +75,17 @@ void procesarMovimiento(
 
     else if(mov == 'r'){
 
-        rotarSiSePuede(pieza,tablero,posX,posY,ancho,alto);
+        rotarSiSePuede(pieza,tablero,posX,posY,alto,ancho);
     }
 }
 
 
 
-bool gameOver(unsigned char **tablero,unsigned char pieza[4],int posX,int posY,int ancho,int alto)
+bool gameOver(unsigned char **tablero,unsigned char pieza[4],int posX,int posY,int alto,int ancho)
 {
-    return colision(tablero, pieza, posX, posY, ancho, alto);
+    return colision(tablero, pieza, posX, posY, alto, ancho);
 }
-void loopJuego(unsigned char **tablero, int ancho, int alto)
+void loopJuego(unsigned char **tablero, int alto, int ancho)
 {    unsigned char pieza[4];
     generarPieza(pieza);
 
@@ -98,7 +97,7 @@ void loopJuego(unsigned char **tablero, int ancho, int alto)
 
     do {
         //  Crear copia visual del tablero
-        unsigned char** copia = crearTablero(ancho, alto);
+        unsigned char** copia = crearTablero(alto, ancho);
 
         // copiar tablero real (piezas fijas)
         for(int i = 0; i < alto; i++){
@@ -107,22 +106,22 @@ void loopJuego(unsigned char **tablero, int ancho, int alto)
             }
         }
 
-        copiarPiezaParcial(copia, pieza, posX, posY,lineasVisibles);
+        copiarPiezaParcial(copia, pieza, posX, posY,lineasVisibles, ancho);
         imprimirTablero(copia, alto, ancho);
         mov = leerMovimiento();
         procesarMovimiento(mov, pieza, posX, posY, tablero, alto, ancho);
 
         // si presiona bajar
         if(mov == 's' && lineasVisibles==4){
-            if(!bajarPieza(tablero, pieza, posX, posY, ancho, alto)){
+            if(!bajarPieza(tablero, pieza, posX, posY, alto, ancho)){
                 // fijar pieza
-                fijarPieza(tablero,pieza,posX,posY,ancho,alto);
+                fijarPieza(tablero,pieza,posX,posY,alto,ancho);
                 eliminarFilas(tablero,alto,ancho);
                 // nueva pieza
                 generarPieza(pieza);
                 posX = ancho / 2;
                 posY = 0;
-                if(gameOver(tablero, pieza, posX, posY, ancho, alto))
+                if(gameOver(tablero, pieza, posX, posY, alto, ancho))
                 {
                     cout << "GAME OVER\n";
                     break;
@@ -133,7 +132,7 @@ void loopJuego(unsigned char **tablero, int ancho, int alto)
         if(lineasVisibles < 4)
             lineasVisibles++;
 
-        // liberar copia (IMPORTANTE)
+        // liberar copia
         for(int i = 0; i < alto; i++){
             delete[] copia[i];
         }

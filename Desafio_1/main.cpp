@@ -9,9 +9,9 @@ int main(){
     int ancho = pedirAncho();
     int alto  = pedirAlto();
 
-    unsigned char** tablero = crearTablero(ancho, alto);
-    loopJuego(tablero,ancho,alto);
-
+    unsigned char** tablero = crearTablero(alto, ancho);
+    loopJuego(tablero,alto,ancho);
+    liberarTablero(tablero, alto);
 
     return 0;
 }
