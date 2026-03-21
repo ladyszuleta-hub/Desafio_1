@@ -4,24 +4,41 @@
 #include "piezas.h"
 using namespace std;
 
-bool colision(unsigned char **tablero, unsigned char pieza[4], int posX, int posY, int alto, int ancho){
-    for (int i=0; i<4;i++){
-        int y =posY+i;
-        if(y<0) continue;
-        if (y>=alto)return true;
-        for(int j=0;j<8; j++){
+int ultimaFilaOcupada(unsigned char pieza[4]){
+    for(int i = 3; i >= 0; i--){
+        if(pieza[i] != 0)
+            return i;
+    }
+    return -1;
+}
+
+bool colision(unsigned char **tablero,unsigned char pieza[4],int posX,int posY,int alto,int ancho)
+{
+    int ultima = ultimaFilaOcupada(pieza);
+
+    for (int i = 0; i <= ultima; i++){
+        int y = posY + i;
+
+        if(y < 0) continue;
+        if (y >= alto) return true;
+
+        for(int j = 0; j < 4; j++){
             if(pieza[i] & (1 << j))
             {
-                int x=posX+j;
-                if(x<0 || x>=ancho)return true;
-                int Byte= x/8;
-                int bit =x%8;
+                int x = posX + j;
+
+                if(x < 0 || x >= ancho) return true;
+
+                int Byte = x / 8;
+                int bit  = x % 8;
+
                 if(tablero[y][Byte] & (1 << bit))
                     return true;
             }
         }
+    }
 
-    }return false;
+    return false;
 }
 void fijarPieza(unsigned char **tablero,unsigned char pieza[4],int &posX,int &posY,int alto,int ancho)
 {
@@ -32,7 +49,7 @@ void fijarPieza(unsigned char **tablero,unsigned char pieza[4],int &posX,int &po
         if(y < 0 || y >= alto)
             continue;
 
-        for(int j = 0; j < 8; j++)
+        for(int j = 0; j < 4; j++)
         {
             if(pieza[i] & (1 << j))
             {
@@ -106,7 +123,7 @@ void loopJuego(unsigned char **tablero, int alto, int ancho)
             }
         }
 
-        copiarPiezaParcial(copia, pieza, posX, posY,lineasVisibles, ancho);
+        copiarPiezaParcial(copia, pieza, posX, posY,lineasVisibles, ancho, alto);
         imprimirTablero(copia, alto, ancho);
         mov = leerMovimiento();
         procesarMovimiento(mov, pieza, posX, posY, tablero, alto, ancho);

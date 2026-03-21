@@ -37,6 +37,7 @@ unsigned char** crearTablero(int alto,int ancho) {
     return tablero;
 }
 void imprimirTablero(unsigned char** tablero, int alto, int ancho) {
+    char cuadrado=254;
 
     for(int y = 0; y < alto; y++) {
 
@@ -46,7 +47,7 @@ void imprimirTablero(unsigned char** tablero, int alto, int ancho) {
             int bit = x % 8;
 
             if(tablero[y][byte] & (1 << bit))
-                cout << "#";
+                cout << cuadrado;
             else
                 cout << ".";
 

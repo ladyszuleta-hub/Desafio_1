@@ -52,57 +52,62 @@ void rotarSiSePuede(unsigned char pieza[4],unsigned char **tablero,int &posX,int
 }
 void generarPieza(unsigned char pieza[4]){
 
-    int tipo = rand()%2;
+    int tipo = rand()%5;
 
     if(tipo==0){ // cuadrado
 
         pieza[0] = 0;
-        pieza[1] = 0;
-        pieza[2] = 0b00000011;
-        pieza[3] = 0b00000011;
+        pieza[1] = 0b0110;
+        pieza[2] = 0b0110;
+        pieza[3] = 0;
 
     }
 
     if(tipo==1){ // linea
 
-        pieza[0] = 0b00000001;
-        pieza[1] = 0b00000001;
-        pieza[2] = 0b00000001;
-        pieza[3] = 0b00000001;
+        pieza[0] = 0b0010;
+        pieza[1] = 0b0010;
+        pieza[2] = 0b0010;
+        pieza[3] = 0b0010;
 
     }
     if(tipo==2){ // T
         pieza[0] = 0;
-        pieza[1] = 0b00000011;
-        pieza[2] = 0b00000010;
+        pieza[1] = 0b0111;
+        pieza[2] = 0b0010;
         pieza[3] = 0;
     }
 
     if(tipo==3){ // L
-        pieza[0] = 0b00000001;
-        pieza[1] = 0b00000001;
-        pieza[2] = 0b00000011;
+        pieza[0] = 0b0001;
+        pieza[1] = 0b0001;
+        pieza[2] = 0b0011;
         pieza[3] = 0;
     }
     if(tipo==4){ // L invertida
-        pieza[0] = 0b00000010;
-        pieza[1] = 0b00000010;
-        pieza[2] = 0b00000011;
+        pieza[0] = 0b0010;
+        pieza[1] = 0b0010;
+        pieza[2] = 0b0011;
         pieza[3] = 0;
     }
 
 }
 
-void copiarPiezaParcial(unsigned char** tablero,unsigned char pieza[4],int posX,int posY,int lineasVisibles, int ancho){
+void copiarPiezaParcial(unsigned char** tablero,unsigned char pieza[4],int posX,int posY,int lineasVisibles,int ancho,int alto)
+{
+    if(lineasVisibles > 4)
+        lineasVisibles = 4;
+
     for(int i = 0; i < lineasVisibles; i++){
         int y = posY + i;
 
+        if(y < 0 || y >= alto) continue;
 
-        if(y < 0) continue;
-
-        for(int j = 0; j < 8; j++){
+        for(int j = 0; j < 4; j++){
             if(pieza[i] & (1 << j)){
                 int x = posX + j;
+
+                if(x < 0 || x >= ancho) continue;
 
                 int byte = x / 8;
                 int bit  = x % 8;
