@@ -74,15 +74,7 @@ char leerMovimiento() {
 
     return mov;
 }
-void procesarMovimiento(
-    char mov,
-    unsigned char pieza[4],
-    int &posX,
-    int &posY,
-    unsigned char **tablero,
-    int alto,
-    int ancho
-    ){
+void procesarMovimiento(char mov,unsigned char pieza[4],int &posX,int &posY,unsigned char **tablero,int alto,int ancho){
     if(mov == 'a'){
         moverIzquierda(pieza, posX, posY, tablero, alto, ancho);
     }
@@ -106,7 +98,7 @@ void loopJuego(unsigned char **tablero, int alto, int ancho)
 {    unsigned char pieza[4];
     generarPieza(pieza);
 
-    int posX = ancho / 2;
+    int posX =( ancho -2)/ 2;
     int posY = 0;
 
     char mov;
@@ -136,7 +128,7 @@ void loopJuego(unsigned char **tablero, int alto, int ancho)
                 eliminarFilas(tablero,alto,ancho);
                 // nueva pieza
                 generarPieza(pieza);
-                posX = ancho / 2;
+                posX = (ancho -2 )/ 2;
                 posY = 0;
                 if(gameOver(tablero, pieza, posX, posY, alto, ancho))
                 {

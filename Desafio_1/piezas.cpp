@@ -98,7 +98,9 @@ void copiarPiezaParcial(unsigned char** tablero,unsigned char pieza[4],int posX,
     if(lineasVisibles > 4)
         lineasVisibles = 4;
 
+
     for(int i = 0; i < lineasVisibles; i++){
+
         int y = posY + i;
 
         if(y < 0 || y >= alto) continue;
@@ -117,24 +119,12 @@ void copiarPiezaParcial(unsigned char** tablero,unsigned char pieza[4],int posX,
         }
     }
 }
-void moverIzquierda(
-    unsigned char pieza[4],
-    int &posX,
-    int &posY,
-    unsigned char **tablero,
-    int alto,
-    int ancho
-    ){
+void moverIzquierda(unsigned char pieza[4],int &posX,int &posY,unsigned char **tablero,int alto,int ancho){
     if(!colision(tablero, pieza, posX - 1, posY, alto, ancho))
         posX--;
 }
-void moverDerecha(unsigned char pieza[4],
-    int &posX,
-    int &posY,
-    unsigned char **tablero,
-    int alto,
-    int ancho
-    ){
+void moverDerecha(unsigned char pieza[4],int &posX,int &posY,unsigned char **tablero,int alto,int ancho){
     if(!colision(tablero, pieza, posX + 1, posY, alto, ancho))
         posX++;
 }
+

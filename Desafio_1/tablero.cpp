@@ -37,7 +37,7 @@ unsigned char** crearTablero(int alto,int ancho) {
     return tablero;
 }
 void imprimirTablero(unsigned char** tablero, int alto, int ancho) {
-    char cuadrado=254;
+    char cuadrado=219;
 
     for(int y = 0; y < alto; y++) {
 
